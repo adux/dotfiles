@@ -1,6 +1,7 @@
-" if has('python3')
-" endif
-
+"""
+"One Vim for all, latex, email, ide, todo
+""""
+"
 "Inicio Vundel
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -17,21 +18,21 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'bronson/vim-trailing-whitespace'
 " gc will comment out a block or line of code in any language ... almost
 Plugin 'tpope/vim-commentary'
-" <space>+u for a undo list
+" <space>+u for a undo tree
 Plugin 'sjl/gundo.vim'
-"Search engine
+"Search engine with ag
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'rking/ag.vim'
-"Snippets
+"Snippets with supertab for YCM compatibility
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
 "Themes
 Plugin 'w0ng/vim-hybrid'
 Plugin 'kristijanhusak/vim-hybrid-material'
-"Fold
+"Folding magic
 Plugin 'tmhedberg/SimpylFold'
-"Git
+"Never leave vim
 Plugin 'tpope/vim-fugitive'
 "NerdTree
 Plugin 'scrooloose/nerdtree'
@@ -39,13 +40,14 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Airline Shizzle
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-"Tags
+"Tags easy
 Plugin 'ludovicchabant/vim-gutentags'
 "Checking Pyhton Syntax
 Plugin 'scrooloose/syntastic'
 Plugin 'Vimjas/vim-python-pep8-indent'
+" Le Colorization
 Plugin 'sheerun/vim-polyglot'
-"Latex
+"Latex, one vim for all
 Plugin 'lervag/vimtex'
 "Snippets by ultisnipets
 "Icons
@@ -58,7 +60,6 @@ Plugin 'freitass/todo.txt-vim'
 " Tmux Stuff
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'tpope/vim-obsession'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
