@@ -1,5 +1,5 @@
 """
-"One Vim for all, latex, email, ide, todo
+"On Vim for all, latex, email, ide, todo
 """"
 "
 "Inicio Vundel
@@ -57,6 +57,8 @@ Plugin 'chrisbra/Colorizer'
 Plugin 'freitass/todo.txt-vim'
 " VHDL
 " Plugin 'suoto/vim-hdl'
+" Graphviz
+Plugin 'liuchengxu/graphviz.vim'
 " Tmux Stuff
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'edkolev/tmuxline.vim'
@@ -110,10 +112,10 @@ if has('gui_running')
   colorscheme hybrid
 else
   set background=dark
-  let g:hybrid_custom_term_colors = 1
+  " let g:hybrid_custom_term_colors = 1
   let g:enable_italic_font = 1
-  "let g:hybrid_transparent_background = 1
-  "let g:hybrid_reduced_contrast = 1
+  " let g:hybrid_transparent_background = 1
+  let g:hybrid_reduced_contrast = 1
   colorscheme hybrid_material
   let g:airline_theme = "hybrid"
 endif
@@ -138,22 +140,25 @@ set shiftwidth=4 "used by things like <> =
 set smarttab
 "File specific
 augroup FileTypeSpecificAutocommands
+    autocmd!
     autocmd FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd FileType htmldjango setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd FileType css setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 "UI Config
 set backspace=indent,eol,start
-set number "mostrar numero de linea
+set number relativenumber "mostrar numero de linea
 set showcmd "mostrar ultimo comando usado en vim
 set cursorline "resalta la linea del cursor
 set laststatus=2 "Allways show the status bar
 set ruler "Show ruling paramerterin in status line
 set showmode "If Visual Mode is on its shown in the line
 "set shortmess=atI "Don't show intro message when starting vim
-set scrolloff=4 "Start scrolling 3 lines before end of file
+set scrolloff=8 "Start scrolling 3 lines before end of file
 set hidden "Permite a los bufferes desaparecer si se han modificado
 "set guiheadroom=0 " Empty Space at the bottom of gVim
+set fileformats=dos
 
 ""Python with virtualenv support ... Not needed with pipenv
 "py3 << EOF
@@ -260,6 +265,8 @@ let g:airline#extenssion#syntastic#enable = 1
 "Syntastic auto Airline
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
+" let g:syntastic_html_tidy_exec = '/usr/bin/tidy'
+let g:syntastic_html_checkers = ['tidy']
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_enable_signs = 1
@@ -267,7 +274,7 @@ let g:syntastic_enable_signs = 1
 "AutoComplete
 let g:ycm_global_ycm_extra_conf = '/home/adux/.vim/bundle/vim-snippets/autoload/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_server_python_interpreter='/usr/bin/python'
+let g:ycm_server_python_interpreter = '/usr/bin/python3'
 "Youcompleteme con vimtex
 if !exists('g:ycm_semantic_triggers')
    let g:ycm_semantic_triggers = {}

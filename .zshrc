@@ -162,6 +162,9 @@ bindkey -v
 bindkey "\e[3~" delete-char
 # Better searching in command mode
 bindkey -M vicmd '/' history-incremental-search-forward
+# Edit command in vim
+autoload edit-command-line; zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
 # Beginning search with arrow keys
 autoload -U up-line-or-beginning-search
@@ -173,7 +176,6 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 bindkey "^[OA" up-line-or-beginning-search
 bindkey "^[OB" down-line-or-beginning-search
 ## use the vi navigation keys (hjkl) besides cursor keys in menu completion
-
 
 ##
 # Vi Mode
@@ -234,16 +236,12 @@ alias -g N='&>/dev/null'
 #alias -g T='|tail'
 alias -g V='| vim -'
 alias -g vpnzhaw='.scripts/vpn_zhaw.sh'
-alias -g noturnoff=setterm -powerdown 0
-alias -g donotdisturb='notify-send "DUNST_COMMAND_PAUSE"'
-alias -g disturb'=notify-send "DUNST_COMMAND_RESUME"'
+alias -g noturnoff='setterm -powerdown 0'
+alias -g donotdisturb='dunstctl set-paused true'
+alias -g disturb='dunstctl set-paused false'
 alias -g ns='sudo netctl switch-to'
-alias -g prime-switch='sudo /usr/bin/prime-switch'
-
-##
-# direnv config
-##
-eval "$(direnv hook zsh)"
+alias -g primeswitch='sudo /usr/bin/prime-switch'
+alias -g pdf2write='(cd /home/adux/.scripts/ ; zsh pdf2write.sh)'
 
 ##
 #Plugin sources

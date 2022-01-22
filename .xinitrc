@@ -6,9 +6,9 @@ xrandr --setprovideroutputsource modesetting NVIDIA-0
 xrandr --auto
 xrandr --dpi 96
 
-exec i3 -V >> /home/adux/.config/i3/log/i3-$(date) 2>&1
-
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+exec i3 -V >> /home/adux/.config/i3/log/i3-$(date) 2>&1
 
 # Components on the left prompt
 MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_status mnml_keymap)
