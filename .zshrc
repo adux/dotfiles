@@ -14,6 +14,9 @@ export PATH=$HOME/.local/bin:$PATH
 export MANWIDTH=${MANWIDTH:-80}
 # Auto pipenv
 source ~/.scripts/pipenv.sh
+#Firefox Hardware Acceleration
+export MOZ_X11_EGL=1
+export MOZ_WEBRENDER=1
 
 ##
 # CACHE CONFIG
