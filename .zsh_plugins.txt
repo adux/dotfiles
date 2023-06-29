@@ -1,0 +1,1 @@
+/home/adux/.zsh_plugins.txt
