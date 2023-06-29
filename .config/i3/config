@@ -1,0 +1,305 @@
+#Ejecutables:
+#Wallpaper
+exec --no-startup-id feh --randomize --bg-fill ~/Img/walls/
+
+#Claws Mail
+# exec --no-startup-id claws-mail
+# assign [class="Claws-mail"] $tag4
+
+#autolock
+exec --no-startup-id xautolock -time 10 -locker mortylock
+
+#dropbox
+exec --no-startup-id dropbox start
+exec --no-startup-id nextcloud --background
+
+#dunst
+exec --no-startup-id dunst
+
+#compton
+exec --no-startup-id picom --config ~/.compton.conf -b
+
+# hook for optimus
+# exec_always --no-startup-id /usr/bin/prime-offload
+
+#conky
+exec --no-startup-id conky -c .config/conky/config
+assign [class="conky"] $tag4
+
+#mullvad
+#exec --no-startup-id gksudo mullvad
+#assign [class="Mullvad"] $tag7
+
+#unclutter
+#exec --no-startup-id unclutter
+
+#Pidgin
+#exec --no-startup-id pidgin
+#assign [class="Pidgin"] $tagc
+
+#Temas por resolver
+#Ventanas por defecto con 2 px
+new_window none
+
+#Cambiar el Mod por Windows :)
+set $mod Mod4
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:InconsolataGo Nerd Font Mono 14
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+#Focus follows mouse
+focus_follows_mouse no
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec ~/.scripts/rofi.sh
+
+# start code layout
+# bindsym $mod+z exec ~/.scripts/layout.sh
+
+# start ranger
+bindsym $mod+b exec ~/.scripts/ranger.sh
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #be6664 #175d65 #fffdfc #2e9ef4   #be6664
+client.focused_inactive #bfaeae #566466 #fffdfc #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #bf0300 #fffdfc #bf0300   #bf0300
+client.placeholder      #000000 #0c0c0c #fffdfc #000000   #0c0c0c
+client.background       #fffdfc
+
+# change focus
+bindsym $mod+h exec i3-msg border pixel 1; focus left
+bindsym $mod+j exec i3-msg border pixel 1; focus down
+bindsym $mod+k exec i3-msg border pixel 1; focus up
+bindsym $mod+l exec i3-msg border pixel 1; focus right
+bindsym --release $mod+h exec i3-msg border pixel 0
+bindsym --release $mod+j exec i3-msg border pixel 0
+bindsym --release $mod+k exec i3-msg border pixel 0
+bindsym --release $mod+l exec i3-msg border pixel 0
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left exec i3-msg border pixel 1; focus left
+bindsym $mod+Down exec i3-msg border pixel 1; focus down
+bindsym $mod+Up exec i3-msg border pixel 1; focus up
+bindsym $mod+Right exec i3-msg border pixel 1; focus right
+bindsym --release $mod+Left exec i3-msg border pixel 0
+bindsym --release $mod+Down exec i3-msg border pixel 0
+bindsym --release $mod+Up exec i3-msg border pixel 0
+bindsym --release $mod+Right exec i3-msg border pixel 0
+
+# move focused window
+bindsym $mod+Shift+h exec i3-msg border pixel 1; move left
+bindsym $mod+Shift+j exec i3-msg border pixel 1; move down
+bindsym $mod+Shift+k exec i3-msg border pixel 1; move up
+bindsym $mod+Shift+l exec i3-msg border pixel 1; move right
+bindsym --release $mod+Shift+h exec i3-msg border pixel 0
+bindsym --release $mod+Shift+j exec i3-msg border pixel 0
+bindsym --release $mod+Shift+k exec i3-msg border pixel 0
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left exec i3-msg border pixel 1; move left
+bindsym $mod+Shift+Down exec i3-msg border pixel 1; move down
+bindsym $mod+Shift+Up exec i3-msg border pixel 1; move up
+bindsym $mod+Shift+Right exec i3-msg border pixel 1; move right
+bindsym --release $mod+Shift+Left exec i3-msg border pixel 0
+bindsym --release $mod+Shift+Down exec i3-msg border pixel 0
+bindsym --release $mod+Shift+Up exec i3-msg border pixel 0
+bindsym --release $mod+Shift+Right exec i3-msg border pixel 0
+
+# move workspace to another RandR
+bindsym $mod+x move workspace to output right
+bindsym $mod+y move workspace to output up
+
+# split toggle
+bindsym $mod+Shift+v split toggle
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+set $refresh_i3status killall -SIGUSR1 i3status
+
+# Brightnes
+bindsym XF86MonBrightnessUp exec xbacklight -get >| /home/user_name/.config/i3status/brightness && $refresh_i3status
+
+# focus the child container
+
+#bindsym $mod+d focus child
+set $tag1 "1:_home_"
+set $tag2 "2:_code_"
+set $tag3 "3:_dev__"
+set $tag4 "4:_mail_"
+set $tag5 "5:_vms__"
+set $tag6 "6:_medit"
+set $tag7 "7:_netz_"
+set $tag8 "8:_0111_"
+set $tag9 "9:_0222_"
+set $tag0 "10:_0444_"
+set $tagm "11:_m____"
+set $tagc "12:_chat_"
+
+# switch to workspace
+bindsym $mod+1 workspace $tag1
+bindsym $mod+2 workspace $tag2
+bindsym $mod+3 workspace $tag3
+bindsym $mod+4 workspace $tag4
+bindsym $mod+5 workspace $tag5
+bindsym $mod+6 workspace $tag6
+bindsym $mod+7 workspace $tag7
+bindsym $mod+8 workspace $tag8
+bindsym $mod+9 workspace $tag9
+bindsym $mod+0 workspace $tag0
+bindsym $mod+m workspace $tagm
+bindsym $mod+c workspace $tagc
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $tag1
+bindsym $mod+Shift+2 move container to workspace $tag2
+bindsym $mod+Shift+3 move container to workspace $tag3
+bindsym $mod+Shift+4 move container to workspace $tag4
+bindsym $mod+Shift+5 move container to workspace $tag5
+bindsym $mod+Shift+6 move container to workspace $tag6
+bindsym $mod+Shift+7 move container to workspace $tag7
+bindsym $mod+Shift+8 move container to workspace $tag8
+bindsym $mod+Shift+9 move container to workspace $tag9
+bindsym $mod+Shift+0 move container to workspace $tag0
+bindsym $mod+Shift+m move container to workspace $tagm
+bindsym $mod+Shift+c move container to workspace $tagc
+
+# reload the configuration file
+#bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Manual MODE DISPLAY
+set $mode_display Ext Screen (a) VGA OFF, (b) VGA ON
+mode "$mode_display" {
+    bindsym a exec --no-startup-id xrandr --output LVDS1 --auto --output VGA1 --off, mode "default"
+    #--rotate left was taken out
+    bindsym b exec --no-startup-id xrandr --output LVDS1 --auto --output VGA1 --mode 1280x1024 --right-of LVDS1, mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+# Declare here the shortcut to bring the display selection menu
+bindsym $mod+Shift+d mode "$mode_display"
+
+#Pone la regla de i3locker
+set $Locker mortylock && sync && sleep 3
+
+#Manual MODE SYSTEM
+set $mode_system (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+# back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+x mode "$mode_system"
+
+#eliminar linear verticales
+#hide_edge_borders horizontal
+
+# scrot & gimp - root
+bindsym $mod+Print exec escrotum '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'
+# scrot & gimp - select window or rectangle
+bindsym --release Print exec escrotum '/tmp/%F_%T_$wx$h.png' -s -e 'xclip -selection clipboard -target image/png -i $f'
+
+#Changing border style
+default_border pixel 0
+gaps inner 2px
+gaps outer 2px
+bindsym $mod+t border pixel 1
+bindsym $mod+u border none
+
+# Smart gaps (gaps used if only more than one container on the workspace),
+# inverse_outer, on
+smart_gaps inverse_outer
+# Smart borders (draw borders around container only if it is not the only container on this workspace) 
+# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
+smart_borders on
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        bindsym h resize shrink width 10 px or 5 ppt
+        bindsym j resize grow height 10 px or 5 ppt
+        bindsym k resize shrink height 10 px or 5 ppt
+        bindsym l resize grow width 10 px or 5 ppt
+
+        bindsym Left resize shrink width 10 px or 5 ppt
+        bindsym Down resize grow height 10 px or 5 ppt
+        bindsym Up resize shrink height 10 px or 5 ppt
+        bindsym Right resize grow width 10 px or 5 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+#    output eDP1
+    mode dock
+    font pango:InconsolataGo Nerd Font 14
+	position top
+    i3bar_command i3bar
+	status_command 	i3status
+    #separator_symbol "|"
+    strip_workspace_numbers yes
+    # Obey Fitts's law
+    tray_padding 0
+    colors {
+           background #222222
+           statusline #fffdfc
+           separator #666666
+           #                  border  backgr. text
+           focused_workspace  #be6664 #175d65 #fffdfc
+           active_workspace   #333333 #5f676a #fffdfc
+           inactive_workspace #333333 #222222 #888888
+           urgent_workspace   #2f343a #bf0300 #fffdfc
+        }
+}
+# bar {
+#     output HDMI2
+#     position top
+#     mode dock
+#     hidden_state hide
+#     modifier none
+#     status_command i3status
+#     strip_workspace_numbers yes
+# }
