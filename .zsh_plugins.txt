@@ -1,1 +1,4 @@
-/home/adux/.zsh_plugins.txt
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+subnixr/minimal
+zsh-users/zsh-syntax-highlighting
