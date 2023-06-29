@@ -1,0 +1,26 @@
+pane	0	0	:zsh	1	:*	1	:/home/adux	1	zsh	:
+pane	ACROFESTIVAL	0	:zsh	1	:*	1	:/home/adux/dev/acrofestival	1	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROFESTIVAL	0	:zsh	1	:*	2	:/home/adux/dev/acrofestival	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROFESTIVAL	0	:zsh	1	:*	3	:/home/adux/dev/acrofestival	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROLAMA_DEV	0	:python	1	:*	1	:/home/adux/dev/lamatest/acrolama	1	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROLAMA_DEV	0	:python	1	:*	2	:/home/adux/dev/lamatest/acrolama	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROLAMA_DEV	0	:python	1	:*	3	:/home/adux/dev/lamatest/acrolama	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	ACROLAMA_DEV	1	:python	0	:-	1	:/home/adux/dev/lamatest/acrolama	1	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	EDEV	0	:zsh	1	:*	1	:/home/adux/edev/PM4	1	zsh	:
+pane	HEROKU_LAMA	0	:python	1	:*	1	:/home/adux/dev/heroku_acrolama/acrolama	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	HEROKU_LAMA	0	:python	1	:*	2	:/home/adux/dev/heroku_acrolama/acrolama	1	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	HEROKU_LAMA	0	:python	1	:*	3	:/home/adux/dev/heroku_acrolama/acrolama	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	HEROKU_LAMA	0	:python	1	:*	4	:/home/adux/dev/heroku_acrolama/acrolama	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	URBANACRO	0	:zsh	1	:*	1	:/home/adux/dev/lamatourban/urbanacro	1	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	URBANACRO	0	:zsh	1	:*	2	:/home/adux/dev/lamatourban/urbanacro	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	URBANACRO	0	:zsh	1	:*	3	:/home/adux/dev/lamatourban/urbanacro	0	python	:/usr/bin/python /usr/bin/pipenv shell
+pane	URBANACRO	1	:python	0	:-	1	:/home/adux/dev/lamatourban/urbanacro	1	python	:/usr/bin/python /usr/bin/pipenv shell
+window	0	0	1	:*	c65e,255x65,0,0,1
+window	ACROFESTIVAL	0	1	:*	e456,255x65,0,0[255x52,0,0,2,255x12,0,53{128x12,0,53,3,126x12,129,53,4}]
+window	ACROLAMA_DEV	0	1	:*	6488,255x65,0,0[255x52,0,0,5,255x12,0,53{128x12,0,53,6,126x12,129,53,7}]
+window	ACROLAMA_DEV	1	0	:-	c665,255x65,0,0,8
+window	EDEV	0	1	:*	c666,255x65,0,0,9
+window	HEROKU_LAMA	0	1	:*	db71,255x65,0,0[255x52,0,0{128x52,0,0,10,126x52,129,0,11},255x12,0,53{128x12,0,53,12,126x12,129,53,13}]
+window	URBANACRO	0	1	:*	11cd,255x65,0,0[255x55,0,0,14,255x9,0,56{128x9,0,56,15,126x9,129,56,16}]
+window	URBANACRO	1	0	:-	6366,255x65,0,0,17
+state	URBANACRO	ACROLAMA_DEV
