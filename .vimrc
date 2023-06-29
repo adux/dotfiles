@@ -1,5 +1,5 @@
-"""
-"On Vim for all, latex, email, ide, todo
+"" " 
+" On Vim for all, latex, email, ide, todo
 """"
 "
 "Inicio Vundel
@@ -20,9 +20,9 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'tpope/vim-commentary'
 " <space>+u for a undo tree
 Plugin 'sjl/gundo.vim'
-"Search engine with ag
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'rking/ag.vim'
+"Search engine with repgrep FZF"
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/fzf'
 "Snippets with supertab for YCM compatibility
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -194,7 +194,7 @@ nnoremap k gk
 noremap <leader>u :GundoToggle<CR>
 
 "Esto guarda la session completa que luego se abre con vim -S
-nnoremap <leader>s :mksession<CR>
+nnoremap <leader>s :mksession!<CR>
 
 "Guarda en un lugar especifico los swaps backups y undo
 set backupdir=~/.vim/backup
@@ -230,22 +230,29 @@ let g:NERDTreeGitStatusIndicatorCustom = {
     \ "Unknown"   : "?"
     \ }
 
-"CtrlP settings
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_user_command = 'ag %s -l --hidden --skip-vcs-ignores -g ""'
-let g:ctrlp_working_path_mode = 'r' " Working dir is the nearest ancestor that contains a `.git` folder
-let g:ctrlp_mru_files = 0 " Disable Most Recently Used files feature
-let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
-let g:ctrlp_use_caching = 0 "With Cache
-
-" The Silver Searcher
-if executable('ag')
+" Rp for grep
+if executable('rg')
     " Use ag over grep
-    set grepprg=ag\ --nogroup\ --skip-vcs-ignores\ 
+    set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 endif
+
+let g:fzf_action = {
+            \ 'ctrl-s': 'split',
+            \ 'ctrl-v': 'vsplit'
+            \ }
+
+" Rg only searching in files
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>),
+  \   1,
+  \   {'options': $FZF_DEFAULT_OPTS . " --delimiter=':'" . " --nth='4..'" }, <bang>0)
+
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': $FZF_DEFAULT_OPTS}, <bang>0)
+
+nnoremap <c-p> :Files<CR>
+nnoremap <leader>p :Rg <CR>
 
 "VimText
 let g:tex_flavor = 'latex'

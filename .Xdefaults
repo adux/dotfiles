@@ -1,5 +1,7 @@
 URxvt.font: xft:InconsolataGo Nerd Font Mono:size=14
 URxvt.boldFont: xft:InconsolataGo Nerd Font Mono:size=14
+
+URxvt.geometry: 180x90
 URxvt.depth: 32
 URxvt.borderless: true
 URxvt.externalBorder: 0
