@@ -1,0 +1,15 @@
+! Bind Caps to ISO_Level3_Shift modifier
+clear Lock
+keycode 66 = ISO_Level3_Shift
+
+!Bind the ISO_Level3_Shift modifier to the arrow keys for each
+keysym h = h H NoSymbol NoSymbol Left Left
+keysym j = j J NoSymbol NoSymbol Down Down
+keysym k = k K NoSymbol NoSymbol Up Up
+keysym l = l L NoSymbol NoSymbol Right Right
+
+!Remove whatever X currently considers to be it's 'mod5' modifier
+clear mod5
+
+!Set ISO_Level3_Shift to be the 'mod5' modifier
+add mod5 = ISO_Level3_Shift
