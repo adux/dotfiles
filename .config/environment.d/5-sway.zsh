@@ -1,0 +1,3 @@
+export WLR_NO_HARDWARE_CURSORS=1
+# export XWAYLAND_NO_GLAM=1
+# export GDK_BACKEND=x11

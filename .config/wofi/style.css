@@ -1,0 +1,85 @@
+/* ::root{ */
+/*     --accent: #5291e2; */
+/*     --dark:   #383C4A; */
+/*     --light:  #7C818C; */
+/*     --ld:     #404552; */
+/*     --dl:     #4B5162 */
+/*     --white:  white; */
+/* } */
+
+* {
+  font-family: 'InconsolataGo Nerd Mono Font';
+  font-size: 1.04em;
+}
+
+/* in efect only the border*/
+window {
+  background-color: #be6664;
+}
+
+#input {
+  margin: 0px;
+  border-radius: 0px;
+  border: none;
+  border-bottom: 1px solid #be6664;
+  background-color: #1D1F21;
+  color: #C5C8C6;
+  font-size: 1.25em;
+  box-shadow: none; /* Remove blue "border" */
+}
+
+#input image {
+  color: #white;
+}
+
+/* search icon */
+#input:first-child > :nth-child(1) {
+  color: #C5C8C6;
+  min-height: 1.25em;
+  min-width: 1.25em;
+  /* background-image: -gtk-icontheme('open-menu-symbolic'); */
+}
+
+/* clear icon */
+#input:first-child > :nth-child(4){
+  color: white;
+  min-height: 1.25em;
+  min-width: 1.25em;
+  /* background-image: -gtk-icontheme('window-close-symbolic'); */
+}
+
+#inner-box {
+  background-color: #1D1F21;
+}
+
+#outer-box {
+  margin: 1px;
+  padding:0px;
+  background-color: #1D1F21;
+}
+
+#text {
+  border: none;
+  padding: 3px;
+  color: #C5C8C6;
+}
+
+#entry {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+#entry:selected {
+  background-color: #be6664;
+}
+
+#text:selected {
+}
+
+#scroll {
+}
+
+#img {
+}
+
