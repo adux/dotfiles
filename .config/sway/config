@@ -1,45 +1,27 @@
-#Ejecutables:
-#Wallpaper
-exec --no-startup-id feh --randomize --bg-fill ~/Img/walls/
+# https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
+# GTK applications taking crazy long
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
-#Claws Mail
-# exec --no-startup-id claws-mail
-# assign [class="Claws-mail"] $tag4
-
-#autolock
-exec --no-startup-id xautolock -time 10 -locker mortylock
-
-#dropbox
+# Cloud Files
+exec --no-startup-id keepassxc
 exec --no-startup-id dropbox start
 exec --no-startup-id nextcloud --background
 
-#dunst
+exec --no-startup-id v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=140
+
+# Notifications
 exec --no-startup-id dunst
 
-#compton
-exec --no-startup-id picom --config ~/.compton.conf -b
-
-# hook for optimus
-# exec_always --no-startup-id /usr/bin/prime-offload
-
-#conky
-exec --no-startup-id conky -c .config/conky/config
-assign [class="conky"] $tag4
+exec swayidle -w \
+        timeout 300 'exec $Locker' \
+        timeout 301  'i3-msg "output * dpms off"' \
+        resume 'i3-msg "output * dpms on"' \
+        before-sleep 'playerctl pause' \
+        before-sleep 'exec $Locker'
 
 #mullvad
 #exec --no-startup-id gksudo mullvad
 #assign [class="Mullvad"] $tag7
-
-#unclutter
-#exec --no-startup-id unclutter
-
-#Pidgin
-#exec --no-startup-id pidgin
-#assign [class="Pidgin"] $tagc
-
-#Temas por resolver
-#Ventanas por defecto con 2 px
-default_border none
 
 #Cambiar el Mod por Windows :)
 set $mod Mod4
@@ -55,16 +37,13 @@ floating_modifier $mod
 focus_follows_mouse no
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec foot
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec ~/.scripts/rofi.sh
-
-# start code layout
-# bindsym $mod+z exec ~/.scripts/layout.sh
+bindsym $mod+d exec wofi
 
 # start ranger
 bindsym $mod+b exec ~/.scripts/ranger.sh
@@ -141,9 +120,6 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 set $refresh_i3status killall -SIGUSR1 i3status
 
-# Brightnes
-bindsym XF86MonBrightnessUp exec xbacklight -get >| /home/user_name/.config/i3status/brightness && $refresh_i3status
-
 # focus the child container
 
 #bindsym $mod+d focus child
@@ -188,10 +164,8 @@ bindsym $mod+Shift+0 move container to workspace $tag0
 bindsym $mod+Shift+m move container to workspace $tagm
 bindsym $mod+Shift+c move container to workspace $tagc
 
-# reload the configuration file
-#bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+# Reload the configuration file.
+bindsym --no-warn $mod+Shift+r reload
 
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -200,7 +174,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 set $mode_display Ext Screen (a) VGA OFF, (b) VGA ON
 mode "$mode_display" {
     bindsym a exec --no-startup-id xrandr --output LVDS1 --auto --output VGA1 --off, mode "default"
-    #--rotate left was taken out
+    # --rotate left was taken out
     bindsym b exec --no-startup-id xrandr --output LVDS1 --auto --output VGA1 --mode 1280x1024 --right-of LVDS1, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -209,10 +183,12 @@ mode "$mode_display" {
 # Declare here the shortcut to bring the display selection menu
 bindsym $mod+Shift+d mode "$mode_display"
 
-#Pone la regla de i3locker
-set $Locker mortylock && sync && sleep 3
+# Pone la regla de i3locker
+set $Locker swaylock --screenshot --effect-blur 7x5 --effect-vignette 0.5:0.5 --grace 2 --fade-in 0.2 && sync && sleep 3
 
-#Manual MODE SYSTEM
+
+
+# Manual MODE SYSTEM
 set $mode_system (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
@@ -222,22 +198,14 @@ mode "$mode_system" {
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
-# back to normal: Enter or Escape
+    # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+x mode "$mode_system"
 
-#eliminar linear verticales
-#hide_edge_borders horizontal
-
-# scrot & gimp - root
-bindsym $mod+Print exec escrotum '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'
-# scrot & gimp - select window or rectangle
-bindsym --release Print exec escrotum '/tmp/%F_%T_$wx$h.png' -s -e 'xclip -selection clipboard -target image/png -i $f'
-
-#Changing border style
-default_border pixel 0
+# Changing border style
+default_border pixel 1
 gaps inner 2px
 gaps outer 2px
 bindsym $mod+t border pixel 1
@@ -246,14 +214,15 @@ bindsym $mod+u border none
 # Smart gaps (gaps used if only more than one container on the workspace),
 # inverse_outer, on
 smart_gaps inverse_outer
-# Smart borders (draw borders around container only if it is not the only container on this workspace) 
-# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
+# Smart borders
+# Draw borders around container only if it is not the only container on this workspace
+# on|no_gaps -> on=always activate and no_gaps=only activate
+# If the gap size to the edge of the screen is 0
 smart_borders on
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
         bindsym h resize shrink width 10 px or 5 ppt
         bindsym j resize grow height 10 px or 5 ppt
         bindsym k resize shrink height 10 px or 5 ppt
@@ -273,33 +242,37 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-#    output eDP1
     mode dock
-    font pango:InconsolataGo Nerd Font 14
-	position top
-    i3bar_command i3bar
+    font pango:InconsolataGo Nerd Font Mono 14
+    position top
 	status_command 	i3status
-    #separator_symbol "|"
+    separator_symbol "│"
+    # separator_block_width 9
     strip_workspace_numbers yes
     # Obey Fitts's law
     tray_padding 0
     colors {
-           background #222222
-           statusline #fffdfc
-           separator #666666
-           #                  border  backgr. text
-           focused_workspace  #be6664 #175d65 #fffdfc
-           active_workspace   #333333 #5f676a #fffdfc
-           inactive_workspace #333333 #222222 #888888
-           urgent_workspace   #2f343a #bf0300 #fffdfc
-        }
+       background #222222
+       statusline #fffdfc
+       separator #666666
+       #                  border  backgr. text
+       focused_workspace  #be6664 #175d65 #fffdfc
+       active_workspace   #333333 #5f676a #fffdfc
+       inactive_workspace #333333 #222222 #888888
+       urgent_workspace   #2f343a #bf0300 #fffdfc
+    }
 }
-# bar {
-#     output HDMI2
-#     position top
-#     mode dock
-#     hidden_state hide
-#     modifier none
-#     status_command i3status
-#     strip_workspace_numbers yes
-# }
+
+# Sll the options: https://gist.github.com/jatcwang/ae3b7019f219b8cdc6798329108c9aee
+input * {
+    xkb_layout "ch"
+    xkb_model "pc104"
+
+}
+
+include ~/.config/sway/outputs
+
+output * {
+    bg ~/Img/walls/wallhaven-7p1mzo.jpg fill
+}
+

@@ -1,29 +1,39 @@
-# The following lines were added by compinstall
-
 ##
-# Antibody Plugin Config
-source ~/.zsh_plugins.sh
+# Antidote Plugin Config
+##
+source ~/.zsh_plugins.zsh
 
 ##
 # Enviromental
 ##
+
+folder="/home/adux/.config/environment.d/"
+
+if [[ -d "$folder" ]]; then
+  for file in "$folder"/*.zsh; do
+    source "$file"
+  done
+else
+  echo "Folder does not exist: $folder"
+fi
+
 export VISUAL="vim"
 export BROWSER=/usr/bin/firefox
-# Add ~/.local/ to PATH
 export PATH=$HOME/.local/bin:$PATH
 export MANWIDTH=${MANWIDTH:-80}
+
 # Auto pipenv
 source ~/.scripts/pipenv.sh
 
 ##
-# CACHE CONFIG
+# Cache
 ##
 ZSH_CACHE="/tmp/.zsh-${USER}-${ZSH_VERSION}"
 mkdir -p $ZSH_CACHE
 chmod 700 $ZSH_CACHE
 
 ##
-# History Configuration
+# History
 ##
 HISTSIZE=100000                 #How many lines of history to keep in memory
 HISTFILE=~/.zsh_history         #Where to save history to disk
@@ -35,16 +45,16 @@ setopt incappendhistory         #Immediately append to the history file, not jus
 setopt histignorespace          #Ignores command if first charcter is a space
 
 ##
-# Configs
+# Various :)
 ##
 setopt NO_clobber # warning if file exists ('cat /dev/null > ~/.zshrc')
 setopt printexitvalue # warn if something failed
-setopt auto_cd                  #If a command is can't execute and the command is a folder name, performe cd
-setopt notify                   #Notify status of background jobs inmediatly
-watch=all                       # watch all logins
-logcheck=30                     # every 30 seconds
+setopt auto_cd                  # If a command is can't execute and the command is a folder name, performe cd
+setopt notify                   # Notify status of background jobs inmediatly
+watch=all                       # Watch all logins
+logcheck=30                     # Every 30 seconds
 WATCHFMT="%n from %M has %a tty%l #t %T %W"
-# report about cpu-/system-/user-time of command if running longer than
+# Report about cpu-/system-/user-time of command if running longer than
 # 5 seconds
 REPORTTIME=5
 # automatically remove duplicates from these arrays
@@ -56,15 +66,13 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11,bg=4,bold,underline"
 
 ##
-# Completions Config
+# Completions
 # https://github.com/ThiefMaster/zsh-config/tree/master/zshrc.d
 ##
-fpath=(.cache/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-user-SLASH-zsh-completions/src $fpath)
 autoload -Uz compinit
 compinit -d "$ZSH_CACHE/zcompdump"
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $ZSH_CACHE
-
 # setopt MENU_COMPLETE # immediatelly insert first match
 zstyle ':completion:*' completer _expand_alias _complete _correct _approximate
 zstyle ':completion:*' expand prefix suffix
@@ -91,12 +99,15 @@ zstyle ':completion:*:corrections' format '%U%F{green}%d (errors: %e)%f%u'
 zstyle ':completion:*:warnings' format '%F{202}%BSorry, no matches for: %F{214}%d%b'
 # Show message while waiting for completion
 zstyle ':completion:*' show-completer true
+
 # Use ls-colors for path completions
 function _set-list-colors() {
 	zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 	unfunction _set-list-colors
 }
+
 sched 0 _set-list-colors  # deferred since LC_COLORS might not be available yet
+
 # Always use menu selection for `cd -`
 zstyle ':completion:*:*:cd:*:directory-stack' force-list always
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
@@ -128,10 +139,10 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 zstyle ':completion:*' single-ignored show
 
 ##
-# SSH
+# ssh
 ##
 if [[ -f ~/.ssh/config ]]; then
-  _accounts=(`egrep "^User" ~/.ssh/config | sed s/User\ // | egrep -v '^\*$'`)
+  _accounts=(`grep -E "^User" ~/.ssh/config | sed s/User\ // | grep -E -v '^\*$'`)
   zstyle ':completion:*:users' users $_accounts
 fi
 
@@ -148,6 +159,7 @@ MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('mnml_cwd 2 8')
 # Components shown on info line
 MNML_INFOLN=(mnml_err mnml_jobs mnml_uhp mnml_files)
+MNML_MAGICENTER=(mnml_me_dirs mnml_me_ls mnml_me_git)
 
 # Colors in prompt
 autoload -U colors zsh-mime-setup select-word-style
@@ -240,12 +252,13 @@ alias -g noturnoff='setterm -powerdown 0'
 alias -g donotdisturb='dunstctl set-paused true'
 alias -g disturb='dunstctl set-paused false'
 alias -g ns='sudo netctl switch-to'
-alias -g primeswitch='sudo /usr/bin/prime-switch'
 alias -g pdf2write='(cd /home/adux/.scripts/ ; zsh pdf2write.sh)'
+alias -g crop='grimshot --notify copy area'
+alias -g cal='cal -w --monday --color=auto'
+alias -g tig='git log --graph --pretty=oneline --abbrev-commit'
 
 ##
 #Plugin sources
 ##
-source "/home/adux/.cache/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions/zsh-autosuggestions.zsh"
-source /usr/share/autojump/autojump.zsh
-source "/home/adux/.cache/antibody/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source '/usr/share/zsh-antidote/antidote.zsh'
+antidote load
