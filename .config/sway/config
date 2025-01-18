@@ -2,20 +2,21 @@
 # GTK applications taking crazy long
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
-# Cloud Files
 exec --no-startup-id keepassxc
+# Cloud Files
 exec --no-startup-id dropbox start
+
 exec --no-startup-id nextcloud --background
 
-exec --no-startup-id v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=140
+# exec --no-startup-id v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=140
 
 # Notifications
 exec --no-startup-id dunst
 
 exec swayidle -w \
         timeout 300 'exec $Locker' \
-        timeout 301  'i3-msg "output * dpms off"' \
-        resume 'i3-msg "output * dpms on"' \
+        timeout 301  'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' \
         before-sleep 'playerctl pause' \
         before-sleep 'exec $Locker'
 
@@ -23,12 +24,17 @@ exec swayidle -w \
 #exec --no-startup-id gksudo mullvad
 #assign [class="Mullvad"] $tag7
 
+#audio
+exec --no-startup-id qpwgraph -m
+
+for_window [shell="xwayland"] title_format "[XWayland] %title"
+
 #Cambiar el Mod por Windows :)
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:InconsolataGo Nerd Font Mono 14
+font pango:Inconsolata Nerd Font Mono 12
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -48,56 +54,72 @@ bindsym $mod+d exec wofi
 # start ranger
 bindsym $mod+b exec ~/.scripts/ranger.sh
 
-# class                 border  backgr. text    indicator child_border
-client.focused          #be6664 #175d65 #fffdfc #2e9ef4   #be6664
-client.focused_inactive #bfaeae #566466 #fffdfc #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #bf0300 #fffdfc #bf0300   #bf0300
-client.placeholder      #000000 #0c0c0c #fffdfc #000000   #0c0c0c
-client.background       #fffdfc
+# Volume down (F2)
+bindsym XF86AudioLowerVolume exec wpctl set-volume --limit 0.0 @DEFAULT_AUDIO_SINK@ 10%-
+
+# Volume up (F3)
+bindsym XF86AudioRaiseVolume exec wpctl set-volume --limit 1.2 @DEFAULT_AUDIO_SINK@ 10%+
+
+# Mute/unmute (Optional)
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+# Print
+bindsym Print exec grim -g "$(slurp)" - | swappy -f -
+
+# Screenedit
+# bindsym XF86Launch2 exec grim -g "$(slurp)" - | wl-copy
+
+# class                 border      backgr.     text       indicator   child_border
+client.focused          #cc6666     #373b41     #ffffff    #2e9ef4     #cc6666
+client.focused_inactive #81a2be     #4f5b66     #c5c8c6    #5da8ff     #5f676a
+client.unfocused        #333333     #2c323c     #888888    #373b41     #222222
+client.urgent           #cc6666     #563c5c     #ffffff    #cc241d     #cc241d
+client.placeholder      #000000     #2a2a2a     #c5c8c6    #000000     #0c0c0c
+client.background       #1d1f21
 
 # change focus
-bindsym $mod+h exec i3-msg border pixel 1; focus left
-bindsym $mod+j exec i3-msg border pixel 1; focus down
-bindsym $mod+k exec i3-msg border pixel 1; focus up
-bindsym $mod+l exec i3-msg border pixel 1; focus right
-bindsym --release $mod+h exec i3-msg border pixel 0
-bindsym --release $mod+j exec i3-msg border pixel 0
-bindsym --release $mod+k exec i3-msg border pixel 0
-bindsym --release $mod+l exec i3-msg border pixel 0
+bindsym $mod+h exec swaymsg border pixel 5; focus left
+bindsym $mod+j exec swaymsg border pixel 5; focus down
+bindsym $mod+k exec swaymsg border pixel 5; focus up
+bindsym $mod+l exec swaymsg border pixel 5; focus right
+bindsym --release $mod+h exec swaymsg border pixel 0
+bindsym --release $mod+j exec swaymsg border pixel 0
+bindsym --release $mod+k exec swaymsg border pixel 0
+bindsym --release $mod+l exec swaymsg border pixel 0
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left exec i3-msg border pixel 1; focus left
-bindsym $mod+Down exec i3-msg border pixel 1; focus down
-bindsym $mod+Up exec i3-msg border pixel 1; focus up
-bindsym $mod+Right exec i3-msg border pixel 1; focus right
-bindsym --release $mod+Left exec i3-msg border pixel 0
-bindsym --release $mod+Down exec i3-msg border pixel 0
-bindsym --release $mod+Up exec i3-msg border pixel 0
-bindsym --release $mod+Right exec i3-msg border pixel 0
+bindsym $mod+Left exec swaymsg border pixel 5; focus left
+bindsym $mod+Down exec swaymsg border pixel 5; focus down
+bindsym $mod+Up exec swaymsg border pixel 5; focus up
+bindsym $mod+Right exec swaymsg border pixel 5; focus right
+bindsym --release $mod+Left exec swaymsg border pixel 0
+bindsym --release $mod+Down exec swaymsg border pixel 0
+bindsym --release $mod+Up exec swaymsg border pixel 0
+bindsym --release $mod+Right exec swaymsg border pixel 0
 
 # move focused window
-bindsym $mod+Shift+h exec i3-msg border pixel 1; move left
-bindsym $mod+Shift+j exec i3-msg border pixel 1; move down
-bindsym $mod+Shift+k exec i3-msg border pixel 1; move up
-bindsym $mod+Shift+l exec i3-msg border pixel 1; move right
-bindsym --release $mod+Shift+h exec i3-msg border pixel 0
-bindsym --release $mod+Shift+j exec i3-msg border pixel 0
-bindsym --release $mod+Shift+k exec i3-msg border pixel 0
+bindsym $mod+Shift+h exec swaymsg border pixel 5; move left
+bindsym $mod+Shift+j exec swaymsg border pixel 5; move down
+bindsym $mod+Shift+k exec swaymsg border pixel 5; move up
+bindsym $mod+Shift+l exec swaymsg border pixel 5; move right
+bindsym --release $mod+Shift+h exec swaymsg border pixel 0
+bindsym --release $mod+Shift+j exec swaymsg border pixel 0
+bindsym --release $mod+Shift+k exec swaymsg border pixel 0
+bindsym --release $mod+Shift+l exec swaymsg border pixel 0
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left exec i3-msg border pixel 1; move left
-bindsym $mod+Shift+Down exec i3-msg border pixel 1; move down
-bindsym $mod+Shift+Up exec i3-msg border pixel 1; move up
-bindsym $mod+Shift+Right exec i3-msg border pixel 1; move right
-bindsym --release $mod+Shift+Left exec i3-msg border pixel 0
-bindsym --release $mod+Shift+Down exec i3-msg border pixel 0
-bindsym --release $mod+Shift+Up exec i3-msg border pixel 0
-bindsym --release $mod+Shift+Right exec i3-msg border pixel 0
+bindsym $mod+Shift+Left exec swaymsg border pixel 5; move left
+bindsym $mod+Shift+Down exec swaymsg border pixel 5; move down
+bindsym $mod+Shift+Up exec swaymsg border pixel 5; move up
+bindsym $mod+Shift+Right exec swaymsg border pixel 5; move right
+bindsym --release $mod+Shift+Left exec swaymsg border pixel 0
+bindsym --release $mod+Shift+Down exec swaymsg border pixel 0
+bindsym --release $mod+Shift+Up exec swaymsg border pixel 0
+bindsym --release $mod+Shift+Right exec swaymsg border pixel 0
 
 # move workspace to another RandR
 bindsym $mod+x move workspace to output right
-bindsym $mod+y move workspace to output up
+bindsym $mod+y move workspace to output down
 
 # split toggle
 bindsym $mod+Shift+v split toggle
@@ -128,8 +150,8 @@ set $tag2 "2:_code_"
 set $tag3 "3:_dev__"
 set $tag4 "4:_mail_"
 set $tag5 "5:_vms__"
-set $tag6 "6:_medit"
-set $tag7 "7:_netz_"
+set $tag6 "6:_edit_"
+set $tag7 "7:_x000_"
 set $tag8 "8:_0111_"
 set $tag9 "9:_0222_"
 set $tag0 "10:_0444_"
@@ -168,7 +190,7 @@ bindsym $mod+Shift+c move container to workspace $tagc
 bindsym --no-warn $mod+Shift+r reload
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'swaymsg exit'"
 
 # Manual MODE DISPLAY
 set $mode_display Ext Screen (a) VGA OFF, (b) VGA ON
@@ -184,15 +206,13 @@ mode "$mode_display" {
 bindsym $mod+Shift+d mode "$mode_display"
 
 # Pone la regla de i3locker
-set $Locker swaylock --screenshot --effect-blur 7x5 --effect-vignette 0.5:0.5 --grace 2 --fade-in 0.2 && sync && sleep 3
-
-
+set $Locker swaylock --screenshot --effect-blur 52x5 --effect-vignette 0.5:0.5 --grace 2 --fade-in 0.2 && sync && sleep 3
 
 # Manual MODE SYSTEM
 set $mode_system (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym e exec --no-startup-id swaymsg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
@@ -243,23 +263,22 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
     mode dock
-    font pango:InconsolataGo Nerd Font Mono 14
+    font pango:Inconsolata Nerd Font Mono 12
     position top
-	status_command 	i3status
+    status_command i3status
     separator_symbol "│"
-    # separator_block_width 9
     strip_workspace_numbers yes
-    # Obey Fitts's law
     tray_padding 0
     colors {
-       background #222222
-       statusline #fffdfc
-       separator #666666
-       #                  border  backgr. text
-       focused_workspace  #be6664 #175d65 #fffdfc
-       active_workspace   #333333 #5f676a #fffdfc
-       inactive_workspace #333333 #222222 #888888
-       urgent_workspace   #2f343a #bf0300 #fffdfc
+        background #1d1f21
+        statusline #c5c8c6
+        separator #373b41
+
+        #                   border    background   text
+        focused_workspace  #cc6666   #373b41       #ffffff
+        active_workspace   #81a2be   #373b41       #888888
+        inactive_workspace #1d1f21   #373b41       #888888
+        urgent_workspace   #cc6666   #563c5c       #ffffff
     }
 }
 
@@ -267,6 +286,8 @@ bar {
 input * {
     xkb_layout "ch"
     xkb_model "pc104"
+    # repeat_delay 300
+    # repeat_rate 25
 
 }
 

@@ -30,6 +30,11 @@ Plugin 'ervandew/supertab'
 "Themes
 Plugin 'w0ng/vim-hybrid'
 Plugin 'kristijanhusak/vim-hybrid-material'
+Plugin 'joshdick/onedark.vim'
+Plugin 'catppuccin/vim', { 'name': 'catppuccin' }
+Plugin 'morhetz/gruvbox'
+Plugin 'dracula/vim', { 'name': 'dracula' }
+Plugin 'lunacookies/vim-colors-xcode'
 "Folding magic
 Plugin 'tmhedberg/SimpylFold'
 "Never leave vim
@@ -62,7 +67,12 @@ Plugin 'liuchengxu/graphviz.vim'
 " Tmux Stuff
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'edkolev/tmuxline.vim'
-
+" Copilot
+Plugin 'github/copilot.vim'
+" Black
+Plugin 'psf/black'
+" WAYLAND ONLY
+Plugin 'jasonccox/vim-wayland-clipboard'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 """ Termino Vundel
@@ -111,13 +121,61 @@ if has('gui_running')
   set background=light
   colorscheme hybrid
 else
+  " You might have to force true color when using regular vim inside tmux as the
+  " colorscheme can appear to be grayscale with "termguicolors" option enabled.
+  if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  endif
+  set termguicolors
   set background=dark
-  " let g:hybrid_custom_term_colors = 1
+  " HYBRID
   let g:enable_italic_font = 1
-  " let g:hybrid_transparent_background = 1
-  let g:hybrid_reduced_contrast = 1
-  colorscheme hybrid_material
+  let g:enable_bold_font = 0
+  let g:hybrid_custom_term_colors = 0
+  let g:hybrid_reduced_contrast = 0
+  let g:hybrid_transparent_background = 1
+  colorscheme hybrid_reverse
   let g:airline_theme = "hybrid"
+  " ONEDARK
+  " if has("autocmd")
+  "   augroup onedark_customization
+  "     autocmd!
+  "     autocmd ColorScheme onedark call onedark#set_highlight('Normal', {'ctermbg': 'none', 'guibg': 'none'})
+  "   augroup END
+  " endif
+  " colorscheme onedark
+  " let g:airline_theme="onedark"
+  " CATPPUCCINO
+  " Customize highlight groups to remove background color
+  " colorscheme catppuccin_mocha
+  " let g:airline_theme = 'catppuccin_mocha'
+  " highlight Normal guibg=NONE ctermbg=NONE
+  " highlight NonText guibg=NONE ctermbg=NONE
+  " highlight LineNr guibg=NONE ctermbg=NONE
+  " highlight Folded guibg=NONE ctermbg=NONE
+  " highlight EndOfBuffer guibg=NONE ctermbg=NONE
+  " let g:catppuccin_italic_comments = 1
+  " let g:catppuccin_italic_keywords = 1
+  " let g:catppuccin_italic_booleans = 1
+  " let g:catppuccin_italic_functions = 1
+  " let g:catppuccin_italic_variables = 0
+  " GRUVBOX
+  " Gruvbox settings for high contrast
+  " let g:gruvbox_contrast_dark = "dark"
+  " let g:gruvbox_invert_selection = 0
+  " colorscheme gruvbox
+  " DRACULA
+  " let g:dracula_colorterm = 0
+  " let g:dracula_transparent_bg = 1
+  " colorscheme dracula
+  " XCODE
+  " colorscheme xcodedark
+  " augroup vim-colors-xcode
+  "     autocmd!
+  " augroup END
+  " autocmd vim-colors-xcode ColorScheme * hi Comment        cterm=italic gui=italic
+  " autocmd vim-colors-xcode ColorScheme * hi SpecialComment cterm=italic gui=italic
 endif
 
 "Fonts
@@ -316,6 +374,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsListSnippets = "<C-s>" "List possible snippets based on current file
 
 " Tags :D
+" let g:gutentags_trace = 1
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['package.json', '.git']
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -355,7 +414,7 @@ let g:gutentags_ctags_exclude = [
       \ '*.bak',
       \ '*.zip',
       \ '*.pyc',
-      \ '*.class',
+      \ '*.cset',
       \ '*.sln',
       \ '*.Master',
       \ '*.csproj',

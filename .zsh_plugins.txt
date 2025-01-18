@@ -1,4 +1,4 @@
-zsh-users/zsh-completions
-zsh-users/zsh-history-substring-search
-subnixr/minimal
 zdharma-continuum/fast-syntax-highlighting
+sindresorhus/pure
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-completions
