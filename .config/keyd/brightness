@@ -1,0 +1,6 @@
+[ids]
+*
+
+[main]
+brightnessdown = command(brightnessctl set 10%-)
+brightnessup = command(brightnessctl set +10%)
