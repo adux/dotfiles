@@ -1,20 +1,36 @@
 ##
+# BASH inheritance
+##
+[[ $- != *i* ]] && return
+
+##
 # Antidote Plugin Config
 ##
-source ~/.zsh_plugins.zsh
+zsh_plugins=${ZDOTDIR:-~}/.zsh_plugins
+
+# Ensure the .zsh_plugins.txt file exists so you can add plugins.
+[[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
+fpath=(/usr/share/zsh-antidote/functions $fpath)
+autoload -Uz antidote
+
+# Generate a new static file whenever .zsh_plugins.txt is updated.
+if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
+  antidote bundle <${zsh_plugins}.txt >|${zsh_plugins}.zsh
+fi
+
+source ${zsh_plugins}.zsh
 
 ##
-# Enviromental
+# Enviromental load
 ##
+env_folder="/home/adux/.config/environment.d/"
 
-folder="/home/adux/.config/environment.d/"
-
-if [[ -d "$folder" ]]; then
-  for file in "$folder"/*.zsh; do
+if [[ -d "$env_folder" ]]; then
+  for file in "$env_folder"/*.zsh; do
     source "$file"
   done
 else
-  echo "Folder does not exist: $folder"
+  echo "Folder does not exist: $env_folder"
 fi
 
 export VISUAL="vim"
@@ -22,8 +38,7 @@ export BROWSER=/usr/bin/firefox
 export PATH=$HOME/.local/bin:$PATH
 export MANWIDTH=${MANWIDTH:-80}
 
-# Auto pipenv
-source ~/.scripts/pipenv.sh
+source ~/.scripts/pipenv.sh  # Auto Pipienv if found
 
 ##
 # Cache
@@ -35,38 +50,34 @@ chmod 700 $ZSH_CACHE
 ##
 # History
 ##
-HISTSIZE=100000                 #How many lines of history to keep in memory
-HISTFILE=~/.zsh_history         #Where to save history to disk
-SAVEHIST=100000                 #Number of history entries to save to disk
-#HISTDUP=erase                  #Erase duplicates in the history file
-setopt appendhistory            #Append history to the history file (no overwriting)
-setopt sharehistory             #Share history across terminals
-setopt incappendhistory         #Immediately append to the history file, not just when a term is killed
-setopt histignorespace          #Ignores command if first charcter is a space
+HISTSIZE=100000  #How many lines of history to keep in memory
+HISTFILE=~/.zsh_history #Where to save history to disk
+SAVEHIST=100000  #Number of history entries to save to disk
+#HISTDUP=erase  #Erase duplicates in the history file
+setopt appendhistory  #Append history to the history file (no overwriting)
+setopt sharehistory  #Share history across terminals
+setopt incappendhistory  #Immediately append to the history file, not just when a term is killed
+setopt histignorespace  #Ignores command if first charcter is a space
 
 ##
 # Various :)
 ##
-setopt NO_clobber # warning if file exists ('cat /dev/null > ~/.zshrc')
-setopt printexitvalue # warn if something failed
-setopt auto_cd                  # If a command is can't execute and the command is a folder name, performe cd
-setopt notify                   # Notify status of background jobs inmediatly
-watch=all                       # Watch all logins
-logcheck=30                     # Every 30 seconds
+setopt NO_clobber  #Warning if file exists ('cat /dev/null > ~/.zshrc')
+setopt printexitvalue  #Warning if something failed
+setopt auto_cd  #If a command is can't execute and the command is a folder name, performe cd
+setopt notify  #Notify status of background jobs inmediatly
+watch=all  #Watch all logins
+logcheck=30  #Every 30 seconds
 WATCHFMT="%n from %M has %a tty%l #t %T %W"
-# Report about cpu-/system-/user-time of command if running longer than
-# 5 seconds
-REPORTTIME=5
-# automatically remove duplicates from these arrays
-typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
+REPORTTIME=5  #5 seconds report about cpu-/system-/user-time of command if running longer than
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH  #Automatically remove duplicates from these arrays
 
 ##
 # Autosuggestions
 ##
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=11,bg=4,bold,underline"
 
-##
-# Completions
+## Completions
 # https://github.com/ThiefMaster/zsh-config/tree/master/zshrc.d
 ##
 autoload -Uz compinit
@@ -106,7 +117,7 @@ function _set-list-colors() {
 	unfunction _set-list-colors
 }
 
-sched 0 _set-list-colors  # deferred since LC_COLORS might not be available yet
+sched 0 _set-list-colors  #Deferred since LC_COLORS might not be available yet
 
 # Always use menu selection for `cd -`
 zstyle ':completion:*:*:cd:*:directory-stack' force-list always
@@ -139,7 +150,7 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 zstyle ':completion:*' single-ignored show
 
 ##
-# ssh
+# SSH
 ##
 if [[ -f ~/.ssh/config ]]; then
   _accounts=(`grep -E "^User" ~/.ssh/config | sed s/User\ // | grep -E -v '^\*$'`)
@@ -149,17 +160,9 @@ fi
 ##
 # Prompt // Theme Minimal Config
 ##
-autoload -Uz promptinit
-promptinit
-MNML_OK_COLOR=4
-MNML_USER_CHAR=$
-# Components on the left prompt
-MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_status mnml_keymap mnml_git)
-# Components on the right prompt
-MNML_RPROMPT=('mnml_cwd 2 8')
-# Components shown on info line
-MNML_INFOLN=(mnml_err mnml_jobs mnml_uhp mnml_files)
-MNML_MAGICENTER=(mnml_me_dirs mnml_me_ls mnml_me_git)
+# autoload -Uz promptinit
+# promptinit
+# prompt pure
 
 # Colors in prompt
 autoload -U colors zsh-mime-setup select-word-style
@@ -168,45 +171,21 @@ zsh-mime-setup  # run everything as if it's an executable
 select-word-style bash # ctrl+w on words
 
 ##
-# Key bindings
-#
-bindkey -v
-bindkey "\e[3~" delete-char
-# Better searching in command mode
-bindkey -M vicmd '/' history-incremental-search-forward
-# Edit command in vim
-autoload edit-command-line; zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-
-# Beginning search with arrow keys
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
-bindkey "^[OA" up-line-or-beginning-search
-bindkey "^[OB" down-line-or-beginning-search
-## use the vi navigation keys (hjkl) besides cursor keys in menu completion
-
-##
 # Vi Mode
 ##
-bindkey -v      # vi mode
-vim_ins_mode="%{$fg[yellow]%}[INS]%{$reset_color%}"
-vim_cmd_mode="%{$fg[cyan]%}[CMD]%{$reset_color%}"
-vim_mode=$vim_ins_mode
+bindkey -v
 
-function zle-keymap-select {
-    vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
-    zle reset-prompt
-}
-zle -N zle-keymap-select
-
-function zle-line-finish {
-    vim_mode=$vim_ins_mode
-}
-zle -N zle-line-finish
+##
+# Key bindings
+##
+bindkey "\e[3~" delete-char
+bindkey -M vicmd '/' history-incremental-search-forward  #Better searching in command mode
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+autoload edit-command-line; zle -N edit-command-line  #Edit command in vim
+bindkey -M vicmd 'v' edit-command-line
 
 ##
 # Todo.TXT config
@@ -216,9 +195,8 @@ export TODOTXT_SORT_COMMAND='env LC_COLLATE=C sort -k 2,2 -k 1,1n'
 alias t='todo.sh -d ~/.todo/config-urxvt'
 
 ##
-# Colors
-##
 # Colors in Less
+##
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -227,9 +205,9 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-
-## global aliases (for those who like them) ##
-
+## Global aliases (for those who like them) ##
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 #alias -g '...'='../..'
 #alias -g '....'='../../..'
 alias -g BG='& exit'
@@ -256,9 +234,3 @@ alias -g pdf2write='(cd /home/adux/.scripts/ ; zsh pdf2write.sh)'
 alias -g crop='grimshot --notify copy area'
 alias -g cal='cal -w --monday --color=auto'
 alias -g tig='git log --graph --pretty=oneline --abbrev-commit'
-
-##
-#Plugin sources
-##
-source '/usr/share/zsh-antidote/antidote.zsh'
-antidote load
